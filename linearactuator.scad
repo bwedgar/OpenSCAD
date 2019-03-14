@@ -1,4 +1,6 @@
 //linear actuator
+
+use <motor mount.scad>;
 trackwheelDiameter=50;
 trackDiameter=30;
 trackHeight=3;
@@ -10,6 +12,7 @@ gearwheelHeight=5;
 caseHeight=60;
 caseDepth=80;
 caseThickness=5;
+baseThickness=5;
 caseWidth=80;
 motorHeight=15;
 motorDiameter=20;
@@ -23,31 +26,25 @@ module bar() {
     color("blue") cube([barWidth,barLength,barHeight],center=true);
 }
 
-module barHousing() {
-    difference() {
-        cube([caseWidth,caseDepth,barHeight],center=true);
-        bar();
+module base() {
+        cube([caseWidth,caseDepth,baseThickness],center=true);
     }
-}
+
+
+module back() {
+        cube([caseWidth,baseThickness,caseDepth],center=true);
+    }
+
 
 module case() {
     union() {
-        translate([0,0,caseHeight/2-caseThickness]) barHousing();
-        difference(){
-        cube([caseWidth,caseDepth,caseHeight],center=true);
-        translate([0,caseThickness+0.1,0]) cube([caseWidth+0.02,caseDepth-caseThickness,caseHeight-caseThickness*2],center=true);      
-    }
-}
-}
-
-module track() {
-    difference() {
-        cylinder(d=trackDiameter,h=trackHeight,center=true);
-        cylinder(d=trackDiameter-trackWidth,h=trackHeight+0.01,center=true);
+       base();
+   translate([0,-caseDepth/2,caseHeight/2]) back();    
     }
 }
 
-//track();
+
+
 
 module trackwheel() {
     difference() {
@@ -60,7 +57,11 @@ module trackwheel() {
 module linearactuator() {
     bar();
     case();
-    trackwheel();
+    translate([0,0,20]) trackwheel();
+   translate([0,20,0]) motorMount();
+
+
+ 
 }
 
 linearactuator();

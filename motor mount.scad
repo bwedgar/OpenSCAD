@@ -140,26 +140,3 @@ module motorAssembly() {
 
 //motorAssembly();
 
-module frameSide() {
-    cube([lengthBetweenBuffers,frameThickness,frameSideHeight]);
-}
-
-module frame() {
-    difference() {
-        union() {
-            translate([0,frameInsideSpacing/2,0]) frameSide();
-            translate([0,-frameOutsideSpacing/2,0]) frameSide();
-            translate(frontWheelPosition) wheelAssembly();
-            translate(rearWheelPosition) wheelAssembly();
-            translate([5,0,+15]) translate(rearWheelPosition) rotate([0,90,180])  motorAssembly();
-            
-        }
-        union() {
-            translate(frontWheelPosition) axle();
-            translate(rearWheelPosition) axle();
-        }
-    }
-  
-}
-    
-    frame();
